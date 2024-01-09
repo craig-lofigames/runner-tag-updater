@@ -20,12 +20,8 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - name: Write new version to file
-        run: |
-          sed -n '/[assembly: AssemblyFileVersion$/p' AssemblyInfo.cs c\ '[assembly: AssemblyFileVersion(${{ env.RELEASE_VERSION }})]'
-          find this string using regex and write a new line with the correct version number"[assembly: AssemblyFileVersion"
-          echo $RELEASE_VERSION
-          echo ${{ env.RELEASE_VERSION }}
-   
+        run: sed -i "/AssemblyFileVersion(.*)/AssemblyFileVersion(\"${env.RELEASE_VERSION}\")/" AssemblyInfo.cs
+  
       - name: commit files
         run: |
           git pull
