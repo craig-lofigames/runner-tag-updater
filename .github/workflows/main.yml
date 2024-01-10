@@ -3,7 +3,7 @@ name: UpdateVersionNumberFromTag.yml
 on:
   push:
     tags:        
-      - 'v[0-9]+\.[0-9]+\.[0-9]+'
+      - 'v1+\.[0-9]+\.[0-9]+'
 
 jobs:
   # This workflow contains a single job called "build"
@@ -16,12 +16,13 @@ jobs:
         env:
           GITHUB_VAR: ${{ toJson(github) }}          
         if: endsWith(github.event.base_ref, 'kenshi1') == false
-        run: exit 0
+        run: |
+          echo "v1.x.x tag used on a non Kenshi 1 branch"
+          exit 1
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content to github runner
         with:
-            ref: kenshi1
-            
+            ref: kenshi1            
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV     
       - name: Write new version to file
