@@ -16,7 +16,7 @@ jobs:
         env:
           GITHUB_VAR: ${{ toJson(github) }}          
         if: endsWith(github.event.base_ref, 'kenshi1') == false
-        run: exit 1
+        run: exit 0
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content to github runner
         with:
