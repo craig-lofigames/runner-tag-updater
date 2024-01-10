@@ -7,18 +7,16 @@ on:
 
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  update-version-number:
   
     runs-on: ubuntu-20.04
-    steps:    
-      - name: Dump job github var
-        env:
-          GITHUB_VAR: ${{ toJson(github) }}          
-        run: echo "$GITHUB_VAR"
+    steps:
         # Quit exit if this isn't the K1 branch
       - name: Exit if not on production branch
+        env:
+          GITHUB_VAR: ${{ toJson(github) }}          
         if: endsWith(github.event.base_ref, 'kenshi1') == false
-        run: exit -1
+        run: exit 1
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content to github runner
         with:
