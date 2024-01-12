@@ -26,9 +26,9 @@ jobs:
       - name: Write new version to file
         run: sed -i "s/KENSHI_VERSION[ \t]+\"[0-9]\.[0-9]+\.[0-9]+\"/KENSHI_VERSION\t\t\"$RELEASE_VERSION\"/" version.h > version.h
       - name: print
-        run: echo "version.h" >> $GITHUB_ENV   
+        run: echo "version.h" >> $GITHUB_OUTPUT   
       - name: print2
-        run: cat "version.h" >> $GITHUB_ENV   
+        run: cat "version.h" >> $GITHUB_OUTPUT   
       - name: Commit change
         run: |
           git pull
