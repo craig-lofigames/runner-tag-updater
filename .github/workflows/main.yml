@@ -9,10 +9,10 @@ jobs:
   update-version-number:
     runs-on: ubuntu-20.04
     steps:    
-      #- name: checkout repo content
-      #  uses: actions/checkout@v2 # checkout the repository content to github runner
-      #  with:
-      #      ref: kenshi1
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content to github runner
+        with:
+            ref: main
       #- name: Exit if tag not on Kenshi 1 branch
       #  env:
       #    GITHUB_VAR: ${{ toJson(github) }}          
