@@ -3,39 +3,37 @@ name: UpdateVersionNumberFromTag.yml
 on:
   push:
     tags:        
-      - 'v1+\.[0-9]+\.[0-9]+'
+      - '1\.[0-9]+\.[0-9]+'
 
 jobs:
-  # This workflow contains a single job called "build"
   update-version-number:
-  
     runs-on: ubuntu-20.04
-    steps:
-        # Quit exit if this isn't the K1 branch
-      - name: Exit if not on production branch
+    steps:    
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content to github runner
+        with:
+            ref: kenshi1
+      - name: Exit if tag not on Kenshi 1 branch
         env:
           GITHUB_VAR: ${{ toJson(github) }}          
         if: endsWith(github.event.base_ref, 'kenshi1') == false
         run: |
-          echo "v1.x.x tag used on a non Kenshi 1 branch"
+          echo "1.x.x tag used on a non Kenshi 1 branch"
           exit 1
-      - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content to github runner
-        with:
-            ref: kenshi1            
-      - name: Set env
+      - name: Get version number from tag
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV     
       - name: Write new version to file
-        run: sed -i  "s/AssemblyFileVersion\(.*\)/AssemblyFileVersion\(\"$RELEASE_VERSION\"\)/"  "forgotten construction set/Properties/AssemblyInfo.cs"
-      - name: commit files
+        run: sed -i  "s/KENSHI_VERSION\t\t\"[0-9]\.[0-9]+\.[0-9]+\"/KENSHI_VERSION\t\t\"$RELEASE_VERSION\"/"  "version.h"
+      - name: print
+        run: grep version.h
+      - name: Commit change
         run: |
           git pull
           git config --local user.email "craig@lofigames.com"
           git config --local user.name "craig-lofigames"
           git add -A
-          git commit -m "Updating AssemblyInfo.cs with new version number" -a
-          
-      - name: push changes
+          git commit -m "Updating version.h with new version number" -a          
+      - name: Push change
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
