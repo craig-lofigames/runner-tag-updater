@@ -25,7 +25,7 @@ jobs:
       - name: Write new version to file
         run: sed -i  "s/KENSHI_VERSION\t\t\"[0-9]\.[0-9]+\.[0-9]+\"/KENSHI_VERSION\t\t\"$RELEASE_VERSION\"/"  "version.h"
       - name: print
-        run: grep version.h
+        run: cat version.h
       - name: Commit change
         run: |
           git pull
